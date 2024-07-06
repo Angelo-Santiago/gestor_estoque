@@ -17,6 +17,9 @@ class Local(BaseModel):
     class Meta:
         db_table = 'locais'
 
+    def __str__(self):
+        return self.name
+
 
 class Movimentacao(BaseModel):
     TIPO_MOVIMENTACAO = [
@@ -60,6 +63,9 @@ class Movimentacao(BaseModel):
     class Meta:
         db_table = 'movimentacoes'
 
+    def __str__(self):
+        return self.name
+
 
 class Embalagem(BaseModel):
     name = models.CharField(
@@ -73,6 +79,9 @@ class Embalagem(BaseModel):
 
     class Meta:
         db_table = 'embalagens'
+
+    def __str__(self):
+        return self.sigla
 
 
 class Fornecedor(BaseModel):
@@ -90,6 +99,9 @@ class Fornecedor(BaseModel):
 
     class Meta:
         db_table = 'fornecedores'
+
+    def __str__(self):
+        return self.name
 
 
 class Produto(BaseModel):
@@ -116,11 +128,17 @@ class Produto(BaseModel):
     class Meta:
         db_table = 'produtos'
 
+    def __str__(self):
+        return self.name
+
 
 class Categoria(BaseModel):
-    nome = models.CharField(
+    name = models.CharField(
         max_length=100, verbose_name='nome da categoria', unique=True
     )
 
     class Meta:
         db_table = 'categorias'
+
+    def __str__(self):
+        return self.name
