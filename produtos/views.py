@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
-from .forms import CategoriaForm, EmbalagemForm, LocalForm, ProdutoForm
-from .models import Categoria, Embalagem, Local, Produto
+from .forms import CategoriaForm, EmbalagemForm, LocalForm, ProdutoForm, FornecedorForm
+from .models import Categoria, Embalagem, Local, Produto, Fornecedor
 
 
 def home(request):
@@ -29,6 +29,24 @@ def adicionar_local(request):
         form = LocalForm()
     return render(request, 'produtos/adicionar_local.html', {'form': form})
 
+def editar_local(request, id):
+    local = Local.objects.filter(id=id).first()
+    if request.method == 'POST':
+        form = LocalForm(request.POST, instance=local)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_locais')
+    else:
+        form = LocalForm(instance=local)
+    return render(request, 'produtos/adicionar_local.html', {'form': form})
+
+
+def excluir_local(request, id):
+    local = Local.objects.filter(id=id).first()
+    if request.method == 'GET':
+        local.delete()
+        return redirect('listar_locais')
+
 
 def listar_embalagens(request):
     consulta = request.GET.get('consulta')
@@ -53,23 +71,6 @@ def adicionar_embalagem(request):
     return render(request, 'produtos/adicionar_embalagens.html', {'form': form})
 
 
-def editar_local(request, id):
-    local = Local.objects.filter(id=id).first()
-    if request.method == 'POST':
-        form = LocalForm(request.POST, instance=local)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_locais')
-    else:
-        form = LocalForm(instance=local)
-    return render(request, 'produtos/adicionar_local.html', {'form': form})
-
-
-def excluir_local(request, id):
-    local = Local.objects.filter(id=id).first()
-    if request.method == 'GET':
-        local.delete()
-        return redirect('listar_locais')
 
 
 def editar_embalagem(request, id):
@@ -89,8 +90,26 @@ def excluir_embalagem(request, id):
     if request.method == 'GET':
         embalagem.delete()
         return redirect('listar_embalagens')
+    
+#Fornecedores
+def listar_fornecedores(request):
+    consulta = request.GET.get('consulta')
+    fornecedores = Fornecedor.objects.all()
+    if consulta:
+        fornecedores = fornecedores.filter(nome_icontains=consulta)
+    return render(request,'produtos/listar_fornecedores.html', {'fornecedores': fornecedores})
 
+def adicionar_fornecedores(request):
+    if request.method == 'POST':
+        form = FornecedorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_fornecedores')
+    else:
+        form = FornecedorForm()
+    return render(request, 'produtos/adicionar_fornecedores.html', {'form': form})
 
+#Categorias
 def listar_categorias(request):
     consulta = request.GET.get('consulta')
     categorias = Categoria.objects.all()
