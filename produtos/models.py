@@ -81,7 +81,7 @@ class Embalagem(BaseModel):
         db_table = 'embalagens'
 
     def __str__(self):
-        return self.sigla
+        return self.name
 
 
 class Fornecedor(BaseModel):
@@ -117,7 +117,7 @@ class Produto(BaseModel):
     embalagens = models.ManyToManyField(
         'produtos.Embalagem',
         verbose_name='Embalagens do produto',
-    )
+    ),
     estoque_minimo = models.FloatField(
         verbose_name='Estoque minimo do produto',
     )
@@ -129,7 +129,7 @@ class Produto(BaseModel):
         db_table = 'produtos'
 
     def __str__(self):
-        return self.name
+        return self.embalagens
 
 
 class Categoria(BaseModel):

@@ -147,7 +147,7 @@ def excluir_categoria(request, id):
         categoria.delete()
         return redirect('listar_categorias')
 
-
+#produtos
 def listar_produtos(request):
     consulta = request.GET.get('consulta')
     produtos = Produto.objects.all()
